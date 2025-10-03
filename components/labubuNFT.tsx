@@ -282,55 +282,55 @@ const LabubuNFT: FC<LabubuNFTProps> = ({
   backgroundImg,
   price,
 }) => {
-  // const [timeLeft, setTimeLeft] = useState({
-  //   hours: 7,
-  //   minutes: 4,
-  //   seconds: 8,
-  // });
+  const [timeLeft, setTimeLeft] = useState({
+    hours: 7,
+    minutes: 4,
+    seconds: 8,
+  });
 
-  // useEffect(() => {
-  //   if (!isFlashSale) return;
+  useEffect(() => {
+    if (!isFlashSale) return;
 
-  //   const countdown = setInterval(() => {
-  //     setTimeLeft((prev) => {
-  //       let { hours, minutes, seconds } = prev;
+    const countdown = setInterval(() => {
+      setTimeLeft((prev) => {
+        let { hours, minutes, seconds } = prev;
 
-  //       if (seconds > 0) {
-  //         seconds--;
-  //       } else if (minutes > 0) {
-  //         minutes--;
-  //         seconds = 59;
-  //       } else if (hours > 0) {
-  //         hours--;
-  //         minutes = 59;
-  //         seconds = 59;
-  //       } else {
-  //         clearInterval(countdown);
-  //         return prev;
-  //       }
+        if (seconds > 0) {
+          seconds--;
+        } else if (minutes > 0) {
+          minutes--;
+          seconds = 59;
+        } else if (hours > 0) {
+          hours--;
+          minutes = 59;
+          seconds = 59;
+        } else {
+          clearInterval(countdown);
+          return prev;
+        }
 
-  //       return { hours, minutes, seconds };
-  //     });
-  //   }, 1000);
+        return { hours, minutes, seconds };
+      });
+    }, 1000);
 
-  //   return () => {
-  //     clearInterval(countdown);
-  //   };
-  // }, [isFlashSale]);
+    return () => {
+      clearInterval(countdown);
+    };
+  }, [isFlashSale]);
 
-  // const formatTime = (timeLeft: {
-  //   hours: number;
-  //   minutes: number;
-  //   seconds: number;
-  // }) => {
-  //   return `${timeLeft.hours}h : ${timeLeft.minutes}m : ${timeLeft.seconds}s`;
-  // };
+  const formatTime = (timeLeft: {
+    hours: number;
+    minutes: number;
+    seconds: number;
+  }) => {
+    return `${timeLeft.hours}h : ${timeLeft.minutes}m : ${timeLeft.seconds}s`;
+  };
 
-  // const formattedCounter = formatTime(timeLeft);
-  // const memoizedFormattedCounter = useMemo(
-  //   () => formattedCounter,
-  //   [formattedCounter]
-  // );
+  const formattedCounter = formatTime(timeLeft);
+  const memoizedFormattedCounter = useMemo(
+    () => formattedCounter,
+    [formattedCounter]
+  );
 
   const data = {
     name,
@@ -377,13 +377,13 @@ const LabubuNFT: FC<LabubuNFTProps> = ({
 
       <LabubuBackground backgroundImg={backgroundImg} />
 
-      {/* <div className='card-body'>
+      <div className='card-body'>
         <div className='cart-item-name'>
           <LabubuInfo name={name} />
 
           {isFlashSale && (
-            // <FlashSaleCounter formattedCounter={formattedCounter} />
-            <FlashSaleCollocation isFlashSale={isFlashSale} />
+            <FlashSaleCounter formattedCounter={formattedCounter} />
+            // <FlashSaleCollocation isFlashSale={isFlashSale} />
           )}
         </div>
 
@@ -392,9 +392,9 @@ const LabubuNFT: FC<LabubuNFTProps> = ({
 
           <PlaceABidButton onClick={onClick} />
         </div>
-      </div> */}
+      </div>
 
-      <FlashSaleBadgeWithCounterWrapper
+      {/* <FlashSaleBadgeWithCounterWrapper
         labubuInfoSection={<LabubuInfo name={name} />}
         cartItemPriceSection={
           <div className='cart-item-price'>
@@ -404,7 +404,7 @@ const LabubuNFT: FC<LabubuNFTProps> = ({
           </div>
         }
         isFlashSale={isFlashSale}
-      />
+      /> */}
     </div>
   );
 };
