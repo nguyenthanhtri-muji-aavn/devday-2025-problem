@@ -7,6 +7,7 @@ export interface Product {
     rating: number;
     background: string,
     backgroundImg?: string,
+    stockQuantity?: number,
 }
 
 export interface CartItem {

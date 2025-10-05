@@ -155,6 +155,7 @@ export default function Category({
                     backgroundColor={item.background}
                     backgroundImg={item.backgroundImg}
                     price={item.price}
+                    quantity={item.stockQuantity}
                   />
                 </div>
               );

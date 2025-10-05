@@ -19,6 +19,7 @@ interface LabubuNFTProps {
   backgroundImg?: string;
   price: number;
   isFlashSale: boolean;
+  quantity?: number;
 }
 
 const useFadeIn = () => {
@@ -273,6 +274,19 @@ const FlashSaleBadgeWithCounterWrapper = ({
   );
 };
 
+const StockInfo = ({ quantity }: { quantity?: number }) => {
+  const ref = useFadeIn() as RefObject<HTMLSpanElement>;
+
+  return <span ref={ref}>In stock: {quantity ?? 0}</span>;
+};
+
+const MemoizedStockInfo = memo(StockInfo);
+
+const FlashSaleBanner = () => {
+  return <div className='flash-sale-banner'>Flash Sale</div>;
+};
+const MemoizedFlashSaleBanner = memo(FlashSaleBanner);
+
 const LabubuNFT: FC<LabubuNFTProps> = ({
   isFlashSale,
   name,
@@ -280,6 +294,7 @@ const LabubuNFT: FC<LabubuNFTProps> = ({
   backgroundColor,
   backgroundImg,
   price,
+  quantity,
 }) => {
   const [timeLeft, setTimeLeft] = useState({
     hours: 7,
@@ -372,6 +387,8 @@ const LabubuNFT: FC<LabubuNFTProps> = ({
         } as React.CSSProperties
       }
     >
+      {isFlashSale && <FlashSaleBanner />}
+
       <LabubuImage imageUrl={imageUrl} name={name} />
 
       <LabubuBackground backgroundImg={backgroundImg} />
@@ -380,10 +397,13 @@ const LabubuNFT: FC<LabubuNFTProps> = ({
         <div className='cart-item-name'>
           <LabubuInfo name={name} />
 
-          {isFlashSale && (
-            <FlashSaleCounter formattedCounter={formattedCounter} />
-            // <FlashSaleCollocation isFlashSale={isFlashSale} />
-          )}
+          <div className='cart-item-stock-info'>
+            <StockInfo quantity={quantity} />
+            {isFlashSale && (
+              <FlashSaleCounter formattedCounter={formattedCounter} />
+              // <FlashSaleCollocation isFlashSale={isFlashSale} />
+            )}
+          </div>
         </div>
 
         <div className='cart-item-price'>
