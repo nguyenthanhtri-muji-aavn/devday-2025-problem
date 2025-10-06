@@ -72,7 +72,6 @@ const LabubuImage = ({
 
   return <img src={imageUrl} alt={name} ref={ref} />;
 };
-const MemoizedLabubuImage = memo(LabubuImage);
 
 /**
  * LabubuBackground Component
@@ -85,7 +84,6 @@ const LabubuBackground = ({ backgroundImg }: { backgroundImg?: string }) => {
     </div>
   );
 };
-const MemoizedLabubuBackground = memo(LabubuBackground);
 
 const PlaceABidButton: FC<{ onClick: () => void }> = ({ onClick }) => {
   const ref = useButtonAnimation();
@@ -96,7 +94,6 @@ const PlaceABidButton: FC<{ onClick: () => void }> = ({ onClick }) => {
     </button>
   );
 };
-const MemoizedPlaceABidButton = memo(PlaceABidButton);
 
 const LabubuInfo = ({ name }: { name: string }) => {
   const ref = useFadeIn() as RefObject<HTMLDivElement>;
@@ -107,8 +104,6 @@ const LabubuInfo = ({ name }: { name: string }) => {
     </div>
   );
 };
-
-const MemoizedLabubuInfo = memo(LabubuInfo);
 
 const LabubuPrice = ({
   labubuPriceData,
@@ -131,63 +126,7 @@ const LabubuPrice = ({
     </div>
   );
 };
-const MemoizedLabubuPrice = memo(LabubuPrice);
 
-const FlashSaleCollocation = ({ isFlashSale }: { isFlashSale: boolean }) => {
-  const ref = useFadeIn() as RefObject<HTMLSpanElement>;
-
-  const [timeLeft, setTimeLeft] = useState({
-    hours: 7,
-    minutes: 4,
-    seconds: 8,
-  });
-
-  useEffect(() => {
-    if (!isFlashSale) return;
-
-    const countdown = setInterval(() => {
-      setTimeLeft((prev) => {
-        let { hours, minutes, seconds } = prev;
-
-        if (seconds > 0) {
-          seconds--;
-        } else if (minutes > 0) {
-          minutes--;
-          seconds = 59;
-        } else if (hours > 0) {
-          hours--;
-          minutes = 59;
-          seconds = 59;
-        } else {
-          clearInterval(countdown);
-          return prev;
-        }
-
-        return { hours, minutes, seconds };
-      });
-    }, 1000);
-
-    return () => {
-      clearInterval(countdown);
-    };
-  }, [isFlashSale]);
-
-  const formatTime = (timeLeft: {
-    hours: number;
-    minutes: number;
-    seconds: number;
-  }) => {
-    return `${timeLeft.hours}h : ${timeLeft.minutes}m : ${timeLeft.seconds}s`;
-  };
-
-  const formattedCounter = formatTime(timeLeft);
-  const memoizedFormattedCounter = useMemo(
-    () => formattedCounter,
-    [formattedCounter]
-  );
-
-  return <span ref={ref}>{formattedCounter}</span>;
-};
 const FlashSaleCounter = ({
   formattedCounter,
 }: {
@@ -196,83 +135,6 @@ const FlashSaleCounter = ({
   const ref = useFadeIn() as RefObject<HTMLSpanElement>;
   return <span ref={ref}>{formattedCounter}</span>;
 };
-const MemoizedFlashSaleCounter = memo(FlashSaleCounter);
-
-const FlashSaleBadgeWithCounterWrapper = ({
-  labubuInfoSection,
-  cartItemPriceSection,
-  isFlashSale,
-}: {
-  labubuInfoSection: ReactNode;
-  cartItemPriceSection: ReactNode;
-  isFlashSale: boolean;
-}) => {
-  const [timeLeft, setTimeLeft] = useState({
-    hours: 7,
-    minutes: 4,
-    seconds: 8,
-  });
-
-  useEffect(() => {
-    if (!isFlashSale) return;
-
-    const countdown = setInterval(() => {
-      setTimeLeft((prev) => {
-        let { hours, minutes, seconds } = prev;
-
-        if (seconds > 0) {
-          seconds--;
-        } else if (minutes > 0) {
-          minutes--;
-          seconds = 59;
-        } else if (hours > 0) {
-          hours--;
-          minutes = 59;
-          seconds = 59;
-        } else {
-          clearInterval(countdown);
-          return prev;
-        }
-
-        return { hours, minutes, seconds };
-      });
-    }, 1000);
-
-    return () => {
-      clearInterval(countdown);
-    };
-  }, [isFlashSale]);
-
-  const formatTime = (timeLeft: {
-    hours: number;
-    minutes: number;
-    seconds: number;
-  }) => {
-    return `${timeLeft.hours}h : ${timeLeft.minutes}m : ${timeLeft.seconds}s`;
-  };
-
-  const formattedCounter = formatTime(timeLeft);
-  const memoizedFormattedCounter = useMemo(
-    () => formattedCounter,
-    [formattedCounter]
-  );
-
-  return (
-    <>
-      <div>Badge Component</div>
-      <div className='card-body'>
-        <div className='cart-item-name'>
-          {labubuInfoSection}
-
-          {isFlashSale && (
-            <FlashSaleCounter formattedCounter={formattedCounter} />
-          )}
-        </div>
-        {cartItemPriceSection}
-      </div>
-    </>
-  );
-};
 
 const StockInfo = ({ quantity }: { quantity?: number }) => {
   const ref = useFadeIn() as RefObject<HTMLSpanElement>;
@@ -280,14 +142,43 @@ const StockInfo = ({ quantity }: { quantity?: number }) => {
   return <span ref={ref}>In stock: {quantity ?? 0}</span>;
 };
 
-const MemoizedStockInfo = memo(StockInfo);
-
 const FlashSaleBanner = () => {
   const ref = useFadeIn() as RefObject<HTMLDivElement>;
 
-  return <div className='flash-sale-banner' ref={ref}>FLASH SALE</div>;
+  return (
+    <div className='flash-sale-banner' ref={ref}>
+      FLASH SALE
+    </div>
+  );
 };
-const MemoizedFlashSaleBanner = memo(FlashSaleBanner);
+
+const handleAddToCart = async (productId: number): Promise<number | null> => {
+  const sessionId = sessionStorage.getItem('your-session-id') as string;
+
+  try {
+    const res = await fetch('/api/cart', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Session-Id': sessionId,
+      },
+      body: JSON.stringify({
+        productId: productId,
+        quantity: 1,
+      }),
+    });
+
+    if (!res.ok) {
+      throw new Error('Failed to add item to cart');
+    }
+
+    const data = await res.json();
+    return data.data.product.stockQuantity;
+  } catch (error) {
+    console.error('Error adding to cart:', error);
+    return null;
+  }
+};
 
 const LabubuNFT: FC<LabubuNFTProps> = ({
   isFlashSale,
@@ -298,6 +189,7 @@ const LabubuNFT: FC<LabubuNFTProps> = ({
   price,
   quantity,
 }) => {
+  const [stockQuantity, setStockQuantity] = useState(quantity);
   const [timeLeft, setTimeLeft] = useState({
     hours: 7,
     minutes: 4,
@@ -343,41 +235,29 @@ const LabubuNFT: FC<LabubuNFTProps> = ({
   };
 
   const formattedCounter = formatTime(timeLeft);
-  const memoizedFormattedCounter = useMemo(
-    () => formattedCounter,
-    [formattedCounter]
-  );
 
-  const data = {
-    name,
-    price,
-    isFlashSale,
-  };
-  const memoizedData = useMemo(
-    () => ({
-      name,
-      price,
-      isFlashSale,
-    }),
-    [name, price, isFlashSale]
-  );
-
-  const onClick = () => console.log('Place a Bid clicked');
-  const memoizedOnClick = useCallback(() => {
+  const onClick = async () => {
     console.log('Place a Bid clicked');
-  }, []);
+    const productIdInString = name.split('#').pop();
+
+    const productId =
+      productIdInString && typeof productIdInString === 'string'
+        ? parseInt(name.split('#').pop() as string)
+        : null;
+
+    if (!productId) return;
+
+    const newStockQuantity = await handleAddToCart(productId);
+
+    if (newStockQuantity === null) return;
+
+    setStockQuantity(newStockQuantity);
+  };
 
   const labubuPriceData = {
     price,
     currency: 'ETH',
   };
-  const memoizedLabubuPriceData = useMemo(
-    () => ({
-      price,
-      currency: 'ETH',
-    }),
-    [price]
-  );
 
   return (
     <div
@@ -400,32 +280,19 @@ const LabubuNFT: FC<LabubuNFTProps> = ({
           <LabubuInfo name={name} />
 
           <div className='cart-item-stock-info'>
-            <StockInfo quantity={quantity} />
+            <StockInfo quantity={stockQuantity} />
             {isFlashSale && (
               <FlashSaleCounter formattedCounter={formattedCounter} />
-              // <FlashSaleCollocation isFlashSale={isFlashSale} />
             )}
           </div>
         </div>
 
         <div className='cart-item-price'>
-          <LabubuPrice labubuPriceData={memoizedLabubuPriceData} />
+          <LabubuPrice labubuPriceData={labubuPriceData} />
 
           <PlaceABidButton onClick={onClick} />
         </div>
       </div>
-
-      {/* <FlashSaleBadgeWithCounterWrapper
-        labubuInfoSection={<LabubuInfo name={name} />}
-        cartItemPriceSection={
-          <div className='cart-item-price'>
-            <LabubuPrice labubuPriceData={memoizedLabubuPriceData} />
-
-            <PlaceABidButton onClick={onClick} />
-          </div>
-        }
-        isFlashSale={isFlashSale}
-      /> */}
     </div>
   );
 };
