@@ -23,8 +23,6 @@ export default function Category({
   const router = useRouter();
 
   const searchTermParam = searchParams.get('search-text') || '';
-  const AIParam = searchParams.get('using-ai') === 'true';
-
   const [searchTerm, setSearchTerm] = useState(searchTermParam);
   const [isUsingAI, setUsingAI] = useState(false);
   const [currentParams, setCurrentParams] = useState(searchParams);
@@ -41,13 +39,6 @@ export default function Category({
     const newSearchTerm = event.target.value;
     setSearchTerm(newSearchTerm);
     updateSearchParams('search-text', newSearchTerm);
-  };
-
-  const handleAIChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const isTurnOnAI = event.target.checked;
-    setUsingAI(isTurnOnAI);
-
-    updateSearchParams('using-ai', isTurnOnAI ? 'true' : '');
   };
 
   const updateSearchParams = (key: string, value: string) => {
