@@ -74,7 +74,8 @@ export default function Category({
     const fetchProducts = async () => {
       try {
         const res = await fetch('/api/products');
-        const productsList = products as Product[];
+        const data = await res.json();
+        const productsList = data?.data?.products as Product[];
         setLabubuList(
           productsList?.filter((product) => {
             const matchesSearch =
@@ -130,7 +131,7 @@ export default function Category({
                     backgroundColor={item.background}
                     backgroundImg={item.backgroundImg}
                     price={item.price}
-                    quantity={item.stockQuantity || Math.floor(Math.random() * 1000) + 1}
+                    quantity={item.stockQuantity}
                   />
                 </div>
               );
