@@ -1,12 +1,12 @@
-import { Suspense } from "react";
-import "./global.scss";
-import { Orbitron, Outfit, Quicksand} from 'next/font/google';
-import { Analytics } from "@vercel/analytics/react"
+import { Suspense } from 'react';
+import './global.scss';
+import { Orbitron, Outfit, Quicksand } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/react';
 
 export const metadata = {
-  title: "Labubu NFT - Problem",
+  title: 'Labubu NFT - Problem',
   description:
-    "A sample Next.js app showing dynamic routing and intercepting routing with modals as a route.",
+    'A sample Next.js app showing dynamic routing and intercepting routing with modals as a route.',
 };
 
 const orbitron = Orbitron({
@@ -27,26 +27,25 @@ const outfit = Outfit({
   variable: '--font-outfit',
 });
 
-export default function RootLayout(props: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html>
       <head>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-        <link rel="icon" href="/logo.png" />
+        <link
+          href='https://fonts.googleapis.com/icon?family=Material+Icons'
+          rel='stylesheet'
+        />
+        <link rel='icon' href='/logo.png' />
       </head>
-      <body className={`${orbitron.variable} ${outfit.variable} ${quicksand.variable}`}>
-	  
-        <div className="body">
-		<Analytics />
-          <Suspense>
-            {props.children}
-          </Suspense>
+      <body
+        className={`${orbitron.variable} ${outfit.variable} ${quicksand.variable}`}
+      >
+        <div className='body'>
+          <Analytics />
+          <Suspense>{props.children}</Suspense>
         </div>
-        <div id="modal-root" />      
+        <div id='modal-root' />
       </body>
     </html>
   );
 }
-

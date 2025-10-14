@@ -108,21 +108,6 @@ export default function Category({
             onChange={handleSearchChange}
           />
         </div>
-        <div className='filter-tag'>
-          {categories.map((category) => (
-            <div
-              key={category.id}
-              data-id={category.id}
-              className={
-                category.id === categoryId
-                  ? 'filter-button selected'
-                  : 'filter-button'
-              }
-            >
-              {category.label}
-            </div>
-          ))}
-        </div>
       </div>
       <div className='category-container'>
         {!filteredProducts.length ? (
