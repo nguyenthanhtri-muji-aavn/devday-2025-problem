@@ -62,20 +62,23 @@ export default function Category({
     return matchesSearch;
   });
 
-  useEffect(() => {
-    setCurrentParams(searchParams);
-  }, [searchParams]);
+  // useEffect(() => {
+  //   console.log('setCurrentParams');
+  //   setCurrentParams(searchParams);
+  // }, [searchParams]);
 
-  useEffect(() => {
-    setSearchTerm(searchTermParam);
-  }, [searchTermParam]);
+  // useEffect(() => {
+  //   console.log('setSearchTerm');
+  //   setSearchTerm(searchTermParam);
+  // }, [searchTermParam]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const res = await fetch('/api/products');
-        const data = await res.json();
+        const data = { data: { products: products } }; // await res.json();
         const productsList = data?.data?.products as Product[];
+        console.log('setLabubuList called');
         setLabubuList(
           productsList?.filter((product) => {
             const matchesSearch =
@@ -94,7 +97,9 @@ export default function Category({
     };
 
     fetchProducts();
-  }, [searchTerm]);
+  }, []);
+
+  console.log('Products list rendered');
 
   return (
     <>
@@ -131,7 +136,9 @@ export default function Category({
                     backgroundColor={item.background}
                     backgroundImg={item.backgroundImg}
                     price={item.price}
-                    quantity={item.stockQuantity}
+                    quantity={
+                      item.stockQuantity || Math.floor(Math.random() * 100) + 1
+                    }
                   />
                 </div>
               );
