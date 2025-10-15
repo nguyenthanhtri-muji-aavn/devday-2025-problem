@@ -62,15 +62,15 @@ export default function Category({
     return matchesSearch;
   });
 
-  // useEffect(() => {
-  //   console.log('setCurrentParams');
-  //   setCurrentParams(searchParams);
-  // }, [searchParams]);
+  useEffect(() => {
+    console.log('setCurrentParams');
+    setCurrentParams(searchParams);
+  }, [searchParams]);
 
-  // useEffect(() => {
-  //   console.log('setSearchTerm');
-  //   setSearchTerm(searchTermParam);
-  // }, [searchTermParam]);
+  useEffect(() => {
+    console.log('setSearchTerm');
+    setSearchTerm(searchTermParam);
+  }, [searchTermParam]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -97,7 +97,7 @@ export default function Category({
     };
 
     fetchProducts();
-  }, []);
+  }, [searchTerm]);
 
   console.log('Products list rendered');
 
