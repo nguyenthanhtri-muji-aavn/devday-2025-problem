@@ -63,12 +63,10 @@ export default function Category({
   });
 
   useEffect(() => {
-    console.log('setCurrentParams');
     setCurrentParams(searchParams);
   }, [searchParams]);
 
   useEffect(() => {
-    console.log('setSearchTerm');
     setSearchTerm(searchTermParam);
   }, [searchTermParam]);
 
@@ -78,7 +76,6 @@ export default function Category({
         const res = await fetch('/api/products');
         const data = { data: { products: products } }; // await res.json();
         const productsList = data?.data?.products as Product[];
-        console.log('setLabubuList called');
         setLabubuList(
           productsList?.filter((product) => {
             const matchesSearch =
