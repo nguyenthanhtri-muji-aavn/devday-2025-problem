@@ -7,7 +7,7 @@ import {
   products,
   productsWithAI,
 } from '../app/mock-data';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import LabubuNFT from '@/components/labubuNFT';
 import Link from 'next/link';
@@ -27,6 +27,7 @@ export default function Category({
   const [isUsingAI, setUsingAI] = useState(false);
   const [currentParams, setCurrentParams] = useState(searchParams);
   const [labubuList, setLabubuList] = useState<Product[]>([]);
+  const renderCountRef = useRef(0);
 
   const productsData =
     categoryId == 'all'
@@ -36,6 +37,7 @@ export default function Category({
       : getProductsByCategory(categoryId as string, isUsingAI);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    renderCountRef.current = 0;
     const newSearchTerm = event.target.value;
     setSearchTerm(newSearchTerm);
     updateSearchParams('search-text', newSearchTerm);
@@ -96,7 +98,7 @@ export default function Category({
     fetchProducts();
   }, [searchTerm]);
 
-  console.log('Products list rendered');
+  renderCountRef.current += 1;
 
   return (
     <>
@@ -110,6 +112,7 @@ export default function Category({
             onChange={handleSearchChange}
           />
         </div>
+        <div>Render Count: {renderCountRef.current}</div>
       </div>
       <div className='category-container'>
         {!filteredProducts.length ? (
