@@ -99,6 +99,7 @@ export default function Category({
   }, [searchTerm]);
 
   renderCountRef.current += 1;
+  console.log('Products list rendered');
 
   return (
     <>
