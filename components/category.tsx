@@ -27,6 +27,7 @@ export default function Category({
   const [isUsingAI, setUsingAI] = useState(false);
   const [currentParams, setCurrentParams] = useState(searchParams);
   const [labubuList, setLabubuList] = useState<Product[]>([]);
+  const countRef = useRef(0);
 
   const productsData =
     categoryId == 'all'
@@ -36,6 +37,7 @@ export default function Category({
       : getProductsByCategory(categoryId as string, isUsingAI);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    countRef.current = 0;
     const newSearchTerm = event.target.value;
     setSearchTerm(newSearchTerm);
     updateSearchParams('search-text', newSearchTerm);
@@ -96,7 +98,8 @@ export default function Category({
     fetchProducts();
   }, [searchTerm]);
 
-  console.log('Products list rendered');
+  countRef.current += 1;
+  console.log('Products list rendered', countRef.current);
 
   return (
     <>
