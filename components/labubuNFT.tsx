@@ -59,9 +59,9 @@ const useButtonAnimation = () => {
 };
 
 /**
- * LabubuImage Component
+ * Image Component
  */
-const LabubuImage = ({
+const Image = ({
   imageUrl,
   name,
 }: {
@@ -74,9 +74,9 @@ const LabubuImage = ({
 };
 
 /**
- * LabubuBackground Component
+ * Background Component
  */
-const LabubuBackground = ({ backgroundImg }: { backgroundImg?: string }) => {
+const Background = ({ backgroundImg }: { backgroundImg?: string }) => {
   const ref = useFadeIn() as RefObject<HTMLDivElement>;
   return (
     <div className='card-top' ref={ref}>
@@ -85,7 +85,7 @@ const LabubuBackground = ({ backgroundImg }: { backgroundImg?: string }) => {
   );
 };
 
-const PlaceABidButton: FC<{ onClick: () => void }> = ({ onClick }) => {
+const Button: FC<{ onClick: () => void }> = ({ onClick }) => {
   const ref = useButtonAnimation();
 
   return (
@@ -95,7 +95,7 @@ const PlaceABidButton: FC<{ onClick: () => void }> = ({ onClick }) => {
   );
 };
 
-const LabubuInfo = ({ name }: { name: string }) => {
+const Info = ({ name }: { name: string }) => {
   const ref = useFadeIn() as RefObject<HTMLDivElement>;
   return (
     <div className='flex flex-col gap-1' ref={ref}>
@@ -105,7 +105,7 @@ const LabubuInfo = ({ name }: { name: string }) => {
   );
 };
 
-const LabubuPrice = ({
+const Price = ({
   labubuPriceData,
 }: {
   labubuPriceData: { price: number; currency: string };
@@ -136,13 +136,13 @@ const FlashSaleCounter = ({
   return <span ref={ref}>{formattedCounter}</span>;
 };
 
-const StockInfo = ({ quantity }: { quantity?: number }) => {
+const Stock = ({ quantity }: { quantity?: number }) => {
   const ref = useFadeIn() as RefObject<HTMLSpanElement>;
 
   return <span ref={ref}>In stock: {quantity ?? 0}</span>;
 };
 
-const FlashSaleBanner = () => {
+const Badge = () => {
   const ref = useFadeIn() as RefObject<HTMLDivElement>;
 
   return (
@@ -269,18 +269,18 @@ const LabubuNFT: FC<LabubuNFTProps> = ({
         } as React.CSSProperties
       }
     >
-      {isFlashSale && <FlashSaleBanner />}
+      {isFlashSale && <Badge />}
 
-      <LabubuImage imageUrl={imageUrl} name={name} />
+      <Image imageUrl={imageUrl} name={name} />
 
-      <LabubuBackground backgroundImg={backgroundImg} />
+      <Background backgroundImg={backgroundImg} />
 
       <div className='card-body'>
         <div className='cart-item-name'>
-          <LabubuInfo name={name} />
+          <Info name={name} />
 
           <div className='cart-item-stock-info'>
-            <StockInfo quantity={stockQuantity} />
+            <Stock quantity={stockQuantity} />
             {isFlashSale && (
               <FlashSaleCounter formattedCounter={formattedCounter} />
             )}
@@ -288,9 +288,9 @@ const LabubuNFT: FC<LabubuNFTProps> = ({
         </div>
 
         <div className='cart-item-price'>
-          <LabubuPrice labubuPriceData={labubuPriceData} />
+          <Price labubuPriceData={labubuPriceData} />
 
-          <PlaceABidButton onClick={onClick} />
+          <Button onClick={onClick} />
         </div>
       </div>
     </div>
