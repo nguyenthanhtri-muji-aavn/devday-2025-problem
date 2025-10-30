@@ -7,16 +7,16 @@ import {
   products,
   productsWithAI,
 } from '../app/mock-data';
-import { useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import LabubuNFT from '@/components/labubuNFT';
 import Link from 'next/link';
 
-export default function Category({
+const Category = ({
   params,
 }: {
   params: { 'category-id': string };
-}) {
+}) => {
   const categoryId = params['category-id'];
 
   const searchParams = useSearchParams();
@@ -101,6 +101,25 @@ export default function Category({
   countRef.current += 1;
   console.log('Products list rendered', countRef.current);
 
+  const filteredListRender = useMemo(() => labubuList.map((item: Product, idx) => {
+    return (
+      <div key={item.id}>
+        <LabubuNFT
+          isFlashSale={item.id % 2 > 0}
+          name={item.name + ' #' + item.id}
+          imageUrl={item.image}
+          description={item.tags.join(', ')}
+          backgroundColor={item.background}
+          backgroundImg={item.backgroundImg}
+          price={item.price}
+          quantity={
+            item.stockQuantity || Math.floor(Math.random() * 100) + 1
+          }
+        />
+      </div>
+    );
+  }), [labubuList]);
+
   return (
     <>
       <div className='category-filter'>
@@ -125,27 +144,12 @@ export default function Category({
           </div>
         ) : (
           <div className='category-items'>
-            {labubuList.map((item: Product, idx) => {
-              return (
-                <div key={item.id}>
-                  <LabubuNFT
-                    isFlashSale={item.id % 2 > 0}
-                    name={item.name + ' #' + item.id}
-                    imageUrl={item.image}
-                    description={item.tags.join(', ')}
-                    backgroundColor={item.background}
-                    backgroundImg={item.backgroundImg}
-                    price={item.price}
-                    quantity={
-                      item.stockQuantity || Math.floor(Math.random() * 100) + 1
-                    }
-                  />
-                </div>
-              );
-            })}
+            {filteredListRender}
           </div>
         )}
       </div>
     </>
   );
 }
+
+export default memo(Category);
