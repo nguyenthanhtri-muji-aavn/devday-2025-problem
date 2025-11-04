@@ -259,7 +259,7 @@ const LabubuNFT: FC<LabubuNFTProps> = ({
     currency: 'ETH',
   };
 
-  console.log('Rendering LabubuNFT:', name);
+  // console.log('Rendering LabubuNFT:', name);
 
   return (
     <div
