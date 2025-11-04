@@ -259,6 +259,8 @@ const LabubuNFT: FC<LabubuNFTProps> = ({
     currency: 'ETH',
   };
 
+  console.log('Rendering LabubuNFT:', name);
+
   return (
     <div
       className='labubu-card labubu-card-fade-in'
