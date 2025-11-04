@@ -99,7 +99,7 @@ const Category = ({
   }, [searchTerm]);
 
   countRef.current += 1;
-  console.log('Products list rendered', countRef.current);
+  // console.log('Products list rendered', countRef.current);
 
   const filteredListRender = useMemo(() => labubuList.map((item: Product, idx) => {
     return (
